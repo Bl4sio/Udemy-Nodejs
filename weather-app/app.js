@@ -1,6 +1,7 @@
+require('dotenv').config()
 const request = require('request')
 
-const url = 'https://api.darksky.net/forecast/79bce79fc4c9b5ed7e141dd6492476b3/37.8267,-122.4233?units=si'
+const url = 'https://api.darksky.net/forecast/' + process.env.DARKSKY_API_KEY + '/37.8267,-122.4233?units=si'
 
 request({ url: url, json: true }, (error, response) => {
 	const temp = response.body.currently.temperature
