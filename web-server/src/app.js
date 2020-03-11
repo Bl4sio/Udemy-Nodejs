@@ -1,16 +1,20 @@
 const path = require('path')
 const express = require('express')
+const hbs = require('hbs')
 
 const app = express()
 
 // Define paths for Express config
 const publicDirPath = path.join(__dirname, '../public')
-const viewsPath = path.join(__dirname, '../templates')
+const viewsPath = path.join(__dirname, '../templates/views')
+const partialsPath = path.join(__dirname, '../templates/partials')
+
 
 // Setup handlebars engine and views
 // Default folder is views
 app.set('view engine', 'hbs')
 app.set('views', viewsPath)
+hbs.registerPartials(partialsPath)
 
 // Share the public resources with express
 app.use(express.static(publicDirPath))
@@ -24,15 +28,17 @@ app.get('', (req, res) => {
 })
 
 app.get('/about', (req, res) => {
-	res.render('about',{
+	res.render('about', {
 		title: 'About Me',
 		name: 'Balázs Gőgös'
 	})
 })
 
 app.get('/help', (req, res) => {
-	res.render('help',{
-		text: 'You are on the Help screen. Sadly it won\'t help you, because it\'s empty'
+	res.render('help', {
+		title: 'Help',
+		text: 'You are on the Help screen. Sadly it won\'t help you, because it\'s empty',
+		name: 'Balázs Gőgös'
 	})
 })
 
