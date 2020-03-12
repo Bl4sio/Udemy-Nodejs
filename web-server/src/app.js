@@ -1,9 +1,11 @@
 const path = require('path')
+require('dotenv').config({ path: path.join(__dirname, '../.env') })
 const express = require('express')
 const hbs = require('hbs')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 const app = express()
-
 // Define paths for Express config
 const publicDirPath = path.join(__dirname, '../public')
 const viewsPath = path.join(__dirname, '../templates/views')
@@ -48,10 +50,23 @@ app.get('/weather', (req, res) => {
 			error: 'Address is not provided!'
 		})
 	}
-	res.send({
-		forecast: 'Clear sky, 15°C',
-		location: 'Hungary, Budapest',
-		address: req.query.address
+
+	geocode(req.query.address, (error, {lat, lng, location} = {} ) => {
+		if (error) {
+			return res.send({ error })
+		}
+	
+		forecast(lat, lng, (error, forecastData) => {
+			if (error) {
+				return res.send({ error })
+			}
+	
+			res.send({
+				forecast: forecastData,
+				location,
+				address: req.query.address
+			})
+		})
 	})
 })
 
