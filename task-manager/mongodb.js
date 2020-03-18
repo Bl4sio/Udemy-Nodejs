@@ -1,17 +1,10 @@
+// C:\Users\Balázs\mongodb\bin\mongod.exe --dbpath=C:\Users\Balázs\mongodb-data
 // CRUD create read update delete
 
-// const mongodb = require('mongodb')
-// const MongoClient = mongodb.MongoClient
-// const ObjectID = mongodb.ObjectID
 const { MongoClient, ObjectID } = require('mongodb')
 
 const connectionURL = 'mongodb://127.0.0.1:27017'
 const databaseName = 'task-manager'
-
-const id = new ObjectID()
-console.log(id.id.length)
-console.log(id.toHexString().length)
-console.log(id.getTimestamp())
 
 MongoClient.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: true }, (error, client) => {
 	if (error) {
@@ -20,51 +13,27 @@ MongoClient.connect(connectionURL, { useUnifiedTopology: true, useNewUrlParser: 
 
 	const db = client.db(databaseName)
 
-	// db.collection('users').insertOne({
-	// 	name: 'Csaba',
-	// 	age: 27
-	// }, (error, result) => {
+	// db.collection('users').findOne({ _id: new ObjectID("5e70e1080751584578da1372") }, (error, user) => {
 	// 	if (error) {
-	// 		return console.log('Unable to insert user')
+	// 		return console.log('Unable to fetch')
 	// 	}
 
-	// 	console.log(result.ops)
+	// 	console.log(user)
 	// })
 
-	// db.collection('users').insertMany([
-	// 	{
-	// 		name: 'Evi',
-	// 		age: 25
-	// 	},
-	// 	{
-	// 		name: 'Attila',
-	// 		age: 28
-	// 	}
-	// ], (error, result) => {
-	// 	if (error) {
-	// 		return console.log('Unable to insert new users!')
-	// 	}
-
-	// 	console.log(result.ops)
+	// db.collection('users').find({ age: 28 }).toArray((error, users) => {
+	// 	console.log(users)
 	// })
 
-	// db.collection('tasks').insertMany([
-	// 	{
-	// 		desciption: 'Shaving',
-	// 		completed: true
-	// 	},
-	// 	{
-	// 		desciption: 'Cooking dinner',
-	// 		completed: true
-	// 	},
-	// 	{
-	// 		desciption: 'Completing my CV',
-	// 		completed: false
-	// 	}
-	// ], (error, result) => {
-	// 	if (error) {
-	// 		return console.log('Unable to add tasks!')
-	// 	}
-	// 	console.log(result.ops)
-	// })
+	db.collection('tasks').findOne({ _id: new ObjectID("5e70dc1378c0d148a8f89b16") }, (error, task) => {
+		if (error) {
+			return console.log('Unable to fetch')
+		}
+
+		console.log(task)
+	})
+
+	db.collection('tasks').find({ completed: false }).toArray((error, tasks) => {
+		console.log(tasks)
+	})
 })
