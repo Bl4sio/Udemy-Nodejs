@@ -1,23 +1,43 @@
 const mongoose = require('mongoose')
+const validator = require('validator')
 
 mongoose.connect('mongodb://127.0.0.1:27017/task-manager-api', {
-	// useUnifiedTopology: true,
+	useUnifiedTopology: true,
 	useNewUrlParser: true,
 	useCreateIndex: true
 })
 
 const User = mongoose.model('User', {
 	name: {
-		type: String
+		type: String,
+		required: true,
+		trim: true
+	},
+	email: {
+		type: String,
+		required: true,
+		trim: true,
+		lowercase: true,
+		validate(value) {
+			if (!validator.isEmail(value)) {
+				throw new Error('Invalid e-mail address!')
+			}
+		}
 	},
 	age: {
-		type: Number
+		type: Number,
+		default: 0,
+		validate(value) {
+			if (value < 0) {
+				throw new Error('Age can\'t be negative!')
+			}
+		}
 	}
 })
 
 const me = new User({
-	name: 'Balazs',
-	age: 28
+	name: '  Béla ',
+	email: 'bela@beka.hu'
 })
 
 me.save().then(() => {
@@ -35,13 +55,13 @@ const Task = mongoose.model('Task', {
 	}
 })
 
-const myTask = Task({
-	description: 'Clean the windows',
-	completed: false
-})
+// const myTask = Task({
+// 	description: 'Clean the windows',
+// 	completed: false
+// })
 
-myTask.save().then(() => {
-	console.log(myTask)
-}).catch((error) => {
-	console.log('Error!', error)
-})
+// myTask.save().then(() => {
+// 	console.log(myTask)
+// }).catch((error) => {
+// 	console.log('Error!', error)
+// })
