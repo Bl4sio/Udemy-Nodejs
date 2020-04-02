@@ -13,9 +13,9 @@ const port = process.env.PORT || 3000
 // 	next()
 // })
 
-app.use((req, res, next) => {
-	res.status(503).send('Sorry, the server is under construction!')
-})
+// app.use((req, res, next) => {
+// 	res.status(503).send('Sorry, the server is under construction!')
+// })
 
 app.use(express.json())
 
