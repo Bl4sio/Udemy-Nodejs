@@ -12,6 +12,7 @@ const auth = async (req, res, next) => {
 		}
 
 		// pass the fetched user to the request
+		req.token = token
 		req.user = user
 		next()
 	} catch (e) {
