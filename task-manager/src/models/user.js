@@ -49,6 +49,18 @@ const userSchema = new mongoose.Schema({
 	}]
 })
 
+// overwrite a builtin function
+// JSON.stringfy is calling the object's toJSON methods
+userSchema.methods.toJSON = function () {
+	const user = this
+	const userObject = user.toObject()
+
+	delete userObject.password
+	delete userObject.tokens
+
+	return userObject
+}
+
 // create a costum function for a user
 userSchema.methods.generateAuthToken = async function () {
 	const user = this
