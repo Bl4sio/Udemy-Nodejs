@@ -49,6 +49,13 @@ const userSchema = new mongoose.Schema({
 	}]
 })
 
+// just for mongoose, not stored in DB
+userSchema.virtual('tasks', {
+	ref: 'Task',
+	localField: '_id',
+	foreignField: 'owner'
+})
+
 // overwrite a builtin function
 // JSON.stringfy is calling the object's toJSON methods
 userSchema.methods.toJSON = function () {
