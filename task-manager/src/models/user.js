@@ -48,6 +48,8 @@ const userSchema = new mongoose.Schema({
 			required: true
 		}
 	}]
+}, {
+	timestamps: true
 })
 
 // just for mongoose, not stored in DB
