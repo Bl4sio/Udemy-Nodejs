@@ -90,7 +90,7 @@ const upload = multer({
 	},
 	fileFilter(req, file, cb) {
 		if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-			return cb(new Error('Invalid file type!\nAccepted extensions: jpg, jpeg, png'))
+			return cb(new Error('Invalid file type! Accepted extensions: jpg, jpeg, png'))
 		}
 
 		cb(undefined, true)
@@ -99,6 +99,8 @@ const upload = multer({
 
 router.post('/users/me/avatar', upload.single('avatar'), (req, res) => {
 	res.send()
+}, (error, req, res, next) => {
+	res.status(400).send({ error: error.message })
 })
 
 module.exports = router
