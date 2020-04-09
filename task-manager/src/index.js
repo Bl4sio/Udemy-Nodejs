@@ -6,16 +6,16 @@ const taskRouter = require('./routers/task')
 const app = express()
 const port = process.env.PORT || 3000
 
-// app.use((req, res, next) => {
-// 	if (req.method === 'GET') {
-// 		return res.send('GET requests are disabled')
-// 	}
-// 	next()
-// })
 
-// app.use((req, res, next) => {
-// 	res.status(503).send('Sorry, the server is under construction!')
-// })
+const multer = require('multer')
+const upload = multer({
+	dest: 'images'
+})
+
+app.post('/upload', upload.single('uploadName'), (req, res) => {
+	res.send()
+})
+
 
 app.use(express.json())
 
