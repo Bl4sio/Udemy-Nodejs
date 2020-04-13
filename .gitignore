@@ -1,4 +1,7 @@
-*node_modules
+node_modules
 notes.json
 notes.txt
 .env
+avatars
+images
+config
