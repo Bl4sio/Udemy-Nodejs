@@ -14,11 +14,19 @@ const publicDirPath = path.join(__dirname, '../public')
 
 app.use(express.static(publicDirPath))
 
-io.on('connection', (socket) => {
-	console.log('New websocket connection!')
+// socket.emit -> to a client
+// io.emit -> to all client
+// socket.broadcast.emit -> to all client expect current
+// io.to.emit -> to all client in a room
+// socket.broadcast.to.emit -> all expect current in a room
 
-	socket.emit('message', generateMessage('Welcome on my Chat-app!'))
-	socket.broadcast.emit('message', generateMessage('A new user has joined!'))
+io.on('connection', (socket) => {
+	socket.on('join', ({ username, room }) => {
+		socket.join(room)
+
+		socket.emit('message', generateMessage('Welcome on my Chat-app!'))
+		socket.broadcast.to(room).emit('message', generateMessage(`${username} has joined`))
+	})
 
 	socket.on('sendMessage', (msg, callback) => {
 		const filter = new Filter()
@@ -27,7 +35,7 @@ io.on('connection', (socket) => {
 			return callback('Profanity is not allowed!')
 		}
 
-		io.emit('message', generateMessage(msg))
+		io.to('testroom').emit('message', generateMessage(msg))
 		callback()
 	})
 
